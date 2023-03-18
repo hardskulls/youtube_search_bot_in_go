@@ -11,6 +11,7 @@ import (
 	"youtube_search_go_bot/commands"
 	"youtube_search_go_bot/errors"
 
+	_ "github.com/gin-gonic/gin"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gopkg.in/telebot.v3"
 )
