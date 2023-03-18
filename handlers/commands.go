@@ -13,30 +13,20 @@ import (
 )
 
 func RegisterCommandHandlers(b *telebot.Bot) {
-	b.Handle(commands.Start, func(c telebot.Context) error {
+	b.Handle(string(commands.Start), func(c telebot.Context) error {
 		return c.Send("This bot lets you search stuff on your YouTube channel")
 	})
-	b.Handle(commands.Info, func(c telebot.Context) error {
+	b.Handle(string(commands.Info), func(c telebot.Context) error {
 		return handleInfoCmd(b, c)
 	})
-	b.Handle(commands.Search, func(c telebot.Context) error {
+	b.Handle(string(commands.Search), func(c telebot.Context) error {
 		return handleSearchCmd(b, c)
 	})
-	b.Handle(commands.List, func(c telebot.Context) error {
+	b.Handle(string(commands.List), func(c telebot.Context) error {
 		return handleListCmd(b, c)
 	})
-	b.Handle(commands.LogOut, func(c telebot.Context) error {
-		dbUrl := os.Getenv("DB_URL")
-		if dbUrl == "" {
-			return telebot.Err("wrong db url")
-		}
-		err := db.LogOut(strconv.FormatInt(c.Sender().ID, 10), dbUrl)
-		if err != nil {
-			_ = c.Send("Log out command failed ")
-		} else {
-			_ = c.Send("Logged out successfully!")
-		}
-		return nil
+	b.Handle(string(commands.LogOut), func(c telebot.Context) error {
+		return handleLogOutCmd(c)
 	})
 }
 
@@ -103,25 +93,16 @@ func handleInfoCmd(b *telebot.Bot, c telebot.Context) error {
 	return nil
 }
 
-func handleLogOutCmd(b *telebot.Bot, c telebot.Context) error {
+func handleLogOutCmd(c telebot.Context) error {
 	dbUrl := os.Getenv("DB_URL")
 	if dbUrl == "" {
 		return telebot.Err("wrong db url")
 	}
-	dialogueData, err := db.GetDialogueData(strconv.FormatInt(c.Message().Sender.ID, 10), dbUrl)
+	err := db.LogOut(strconv.FormatInt(c.Sender().ID, 10), dbUrl)
 	if err != nil {
-		return err
+		_ = c.Send("Log out command failed ")
+	} else {
+		_ = c.Send("Logged out successfully!")
 	}
-
-	text := fmt.Sprintf(
-		"Cureent state: \n Active command - %v \nTarget - %v \nResult limit - %v \nSearch in - %v \nSorting - %v",
-		dialogueData.ActiveCmd, dialogueData.Target, dialogueData.ResultLimit, dialogueData.SearchIn, dialogueData.Sorting,
-	)
-
-	_, err = b.Send(c.Chat(), text)
-	if err != nil {
-		return err
-	}
-
 	return nil
 }
