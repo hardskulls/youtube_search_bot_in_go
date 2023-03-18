@@ -5,13 +5,14 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"youtube_search_go_bot/db"
 	"youtube_search_go_bot/handlers"
 	"youtube_search_go_bot/logging"
 
 	"youtube_search_go_bot/commands"
 	"youtube_search_go_bot/errors"
 
-	_ "github.com/gin-gonic/gin"
+	//_ "github.com/gin-gonic/gin"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gopkg.in/telebot.v3"
 )
@@ -19,6 +20,14 @@ import (
 func main() {
 	logging.LogFuncStart("main")
 	println("main function started")
+
+	dbUrl, ok := os.LookupEnv("DB_URL")
+	if !ok {
+		log.Panicf("%v not set", dbUrl)
+	}
+	err := db.CreateTables(dbUrl)
+	errors.ExitOnError(err)
+
 	oldBot, e := tgbotapi.NewBotAPI(os.Getenv(""))
 	errors.ExitOnError(e)
 
@@ -29,11 +38,11 @@ func main() {
 		tgbotapi.BotCommand{Command: string(commands.List), Description: "List items"},
 		tgbotapi.BotCommand{Command: string(commands.LogOut), Description: "Log out"},
 	)
-	_, err := oldBot.Request(setCommands)
+	_, err = oldBot.Request(setCommands)
 	errors.ExitOnError(err)
 
 	pref := telebot.Settings{
-		Token:  os.Getenv("TOKEN"),
+		Token:  os.Getenv("TELEGRAM_BOT_TOKEN"),
 		Poller: &telebot.LongPoller{Timeout: 10 * time.Second},
 	}
 
