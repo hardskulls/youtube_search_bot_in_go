@@ -28,7 +28,11 @@ func main() {
 	err := db.CreateTables(dbUrl)
 	errors.ExitOnError(err)
 
-	oldBot, e := tgbotapi.NewBotAPI(os.Getenv(""))
+	botToken, ok := os.LookupEnv("TELEGRAM_BOT_TOKEN")
+	if !ok {
+		log.Panicf("%v not set", botToken)
+	}
+	oldBot, e := tgbotapi.NewBotAPI(botToken)
 	errors.ExitOnError(e)
 
 	setCommands := tgbotapi.NewSetMyCommands(
@@ -42,7 +46,7 @@ func main() {
 	errors.ExitOnError(err)
 
 	pref := telebot.Settings{
-		Token:  os.Getenv("TELEGRAM_BOT_TOKEN"),
+		Token:  botToken,
 		Poller: &telebot.LongPoller{Timeout: 10 * time.Second},
 	}
 
