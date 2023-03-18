@@ -1,10 +1,12 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"os"
 	"time"
 	"youtube_search_go_bot/handlers"
+	"youtube_search_go_bot/logging"
 
 	"youtube_search_go_bot/commands"
 	"youtube_search_go_bot/errors"
@@ -14,6 +16,8 @@ import (
 )
 
 func main() {
+	logging.LogFuncStart("main")
+	println("main function started")
 	oldBot, e := tgbotapi.NewBotAPI(os.Getenv(""))
 	errors.ExitOnError(e)
 
@@ -39,7 +43,18 @@ func main() {
 	handlers.RegisterTextHandlers(newBot)
 	handlers.RegisterCallbackHandlers(newBot)
 
-	go http.HandleFunc("/google_callback", handlers.GoogleCallbackHandler)
+	port, ok := os.LookupEnv("PORT")
+	if !ok {
+		log.Panicf("%v not set", port)
+	}
+
+	http.HandleFunc("/google_callback", handlers.GoogleCallbackHandler)
+	go func() {
+		err := http.ListenAndServe(":"+port, nil)
+		if err != nil {
+			errors.ExitOnError(err)
+		}
+	}()
 
 	newBot.Start()
 }
