@@ -13,7 +13,7 @@ import (
 	"youtube_search_go_bot/logging"
 
 	//_ "github.com/gin-gonic/gin"
-	_ "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gopkg.in/telebot.v3"
 )
 
@@ -32,6 +32,19 @@ func main() {
 	if !ok {
 		log.Panicf("%v not set", botToken)
 	}
+
+	oldBot, e := tgbotapi.NewBotAPI(botToken)
+	errors.ExitOnError(e)
+
+	setCommands := tgbotapi.NewSetMyCommands(
+		tgbotapi.BotCommand{Command: string(commands.Start), Description: "Start the bot"},
+		tgbotapi.BotCommand{Command: string(commands.Info), Description: "Show current status"},
+		tgbotapi.BotCommand{Command: string(commands.Search), Description: "Search items"},
+		tgbotapi.BotCommand{Command: string(commands.List), Description: "List items"},
+		tgbotapi.BotCommand{Command: string(commands.LogOut), Description: "Log out"},
+	)
+	_, err = oldBot.Request(setCommands)
+	errors.ExitOnError(err)
 
 	pref := telebot.Settings{
 		Token:  botToken,
