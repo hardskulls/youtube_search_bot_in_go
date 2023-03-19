@@ -113,21 +113,25 @@ func (lb ListButton) CreateKB() telebot.ReplyMarkup {
 
 	switch lb {
 	case ListCancel:
-		replyMarkup.Inline(CreateBtnRow(ListTargetOptions, ListSortingOptions))
-		replyMarkup.Inline(CreateBtnRow(ListResultLimit))
-		replyMarkup.Inline(CreateBtnRow(ListExecute, ListCancel))
+		replyMarkup.InlineKeyboard = make([][]telebot.InlineButton, 3)
+		replyMarkup.InlineKeyboard[0] = CreateInlineButtonRow(ListTargetOptions, ListSortingOptions)
+		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(ListResultLimit)
+		replyMarkup.InlineKeyboard[2] = CreateInlineButtonRow(ListExecute, ListCancel)
 	case ListSettings:
-		replyMarkup.Inline(CreateBtnRow(ListTargetOptions, ListSortingOptions))
-		replyMarkup.Inline(CreateBtnRow(ListResultLimit))
-		replyMarkup.Inline(CreateBtnRow(ListExecute, ListCancel))
+		replyMarkup.InlineKeyboard = make([][]telebot.InlineButton, 3)
+		replyMarkup.InlineKeyboard[0] = CreateInlineButtonRow(ListTargetOptions, ListSortingOptions)
+		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(ListResultLimit)
+		replyMarkup.InlineKeyboard[2] = CreateInlineButtonRow(ListExecute, ListCancel)
 	case ListResultLimit:
 		replyMarkup.Text("Send result limit")
 	case ListTargetOptions:
-		replyMarkup.Inline(CreateBtnRow(ListTargetSubscription, ListTargetPlaylist))
-		replyMarkup.Inline(CreateBtnRow(ListCancel))
+		replyMarkup.InlineKeyboard = make([][]telebot.InlineButton, 2)
+		replyMarkup.InlineKeyboard[0] = CreateInlineButtonRow(ListTargetSubscription, ListTargetPlaylist)
+		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(ListCancel)
 	case ListSortingOptions:
-		replyMarkup.Inline(CreateBtnRow(SortingDate, SortingAlphabetical))
-		replyMarkup.Inline(CreateBtnRow(ListCancel))
+		replyMarkup.InlineKeyboard = make([][]telebot.InlineButton, 2)
+		replyMarkup.InlineKeyboard[0] = CreateInlineButtonRow(SortingDate, SortingAlphabetical)
+		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(ListCancel)
 	case ListExecute:
 	}
 
@@ -139,21 +143,25 @@ func (sb SearchButton) CreateKB() telebot.ReplyMarkup {
 
 	switch sb {
 	case SearchCancel:
-		replyMarkup.Inline(CreateBtnRow(SearchTargetOptions, SearchSearchInOptions))
-		replyMarkup.Inline(CreateBtnRow(SearchResultLimit, SearchTextToSearch))
-		replyMarkup.Inline(CreateBtnRow(SearchExecute, SearchCancel))
+		replyMarkup.InlineKeyboard = make([][]telebot.InlineButton, 3)
+		replyMarkup.InlineKeyboard[0] = CreateInlineButtonRow(SearchTargetOptions, SearchSearchInOptions)
+		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(SearchResultLimit, SearchTextToSearch)
+		replyMarkup.InlineKeyboard[2] = CreateInlineButtonRow(SearchExecute, SearchCancel)
 	case SearchSettings:
-		replyMarkup.Inline(CreateBtnRow(SearchTargetOptions, SearchSearchInOptions))
-		replyMarkup.Inline(CreateBtnRow(SearchResultLimit, SearchTextToSearch))
-		replyMarkup.Inline(CreateBtnRow(SearchExecute, SearchCancel))
+		replyMarkup.InlineKeyboard = make([][]telebot.InlineButton, 3)
+		replyMarkup.InlineKeyboard[0] = CreateInlineButtonRow(SearchTargetOptions, SearchSearchInOptions)
+		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(SearchResultLimit, SearchTextToSearch)
+		replyMarkup.InlineKeyboard[2] = CreateInlineButtonRow(SearchExecute, SearchCancel)
 	case SearchResultLimit:
 		replyMarkup.Text("Send result limit")
 	case SearchTargetOptions:
-		replyMarkup.Inline(CreateBtnRow(SearchTargetSubscription, SearchTargetPlaylist))
-		replyMarkup.Inline(CreateBtnRow(ListCancel))
+		replyMarkup.InlineKeyboard = make([][]telebot.InlineButton, 2)
+		replyMarkup.InlineKeyboard[0] = CreateInlineButtonRow(SearchTargetSubscription, SearchTargetPlaylist)
+		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(ListCancel)
 	case SearchSearchInOptions:
-		replyMarkup.Inline(CreateBtnRow(SearchInTitle, SearchInDescription))
-		replyMarkup.Inline(CreateBtnRow(ListCancel))
+		replyMarkup.InlineKeyboard = make([][]telebot.InlineButton, 2)
+		replyMarkup.InlineKeyboard[0] = CreateInlineButtonRow(SearchInTitle, SearchInDescription)
+		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(ListCancel)
 	case SearchExecute:
 	}
 
@@ -163,7 +171,15 @@ func (sb SearchButton) CreateKB() telebot.ReplyMarkup {
 func CreateBtnRow(iFaces ...interface{ CreateBtn }) telebot.Row {
 	var row telebot.Row
 	for _, btn := range iFaces {
-		_ = append(row, btn.CreateBtn())
+		row = append(row, btn.CreateBtn())
+	}
+	return row
+}
+
+func CreateInlineButtonRow(iFaces ...interface{ CreateBtn }) []telebot.InlineButton {
+	var row []telebot.InlineButton
+	for _, btn := range iFaces {
+		row = append(row, *btn.CreateBtn().Inline())
 	}
 	return row
 }
