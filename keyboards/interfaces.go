@@ -157,11 +157,11 @@ func (sb SearchButton) CreateKB() telebot.ReplyMarkup {
 	case SearchTargetOptions:
 		replyMarkup.InlineKeyboard = make([][]telebot.InlineButton, 2)
 		replyMarkup.InlineKeyboard[0] = CreateInlineButtonRow(SearchTargetSubscription, SearchTargetPlaylist)
-		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(ListCancel)
+		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(SearchCancel)
 	case SearchSearchInOptions:
 		replyMarkup.InlineKeyboard = make([][]telebot.InlineButton, 2)
 		replyMarkup.InlineKeyboard[0] = CreateInlineButtonRow(SearchInTitle, SearchInDescription)
-		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(ListCancel)
+		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(SearchCancel)
 	case SearchExecute:
 	}
 
