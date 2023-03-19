@@ -5,11 +5,11 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"youtube_search_go_bot/commands"
 	"youtube_search_go_bot/db"
 	"youtube_search_go_bot/handlers"
 	"youtube_search_go_bot/logging"
 
-	"youtube_search_go_bot/commands"
 	"youtube_search_go_bot/errors"
 
 	"gopkg.in/telebot.v3"
@@ -37,6 +37,9 @@ func main() {
 	}
 
 	bot, err := telebot.NewBot(pref)
+	errors.ExitOnError(err)
+
+	err = bot.RemoveWebhook(true)
 	errors.ExitOnError(err)
 
 	botCommands := []telebot.Command{
