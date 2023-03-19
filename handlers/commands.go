@@ -31,7 +31,8 @@ func RegisterCommandHandlers(b *telebot.Bot) {
 }
 
 func handleSearchCmd(b *telebot.Bot, c telebot.Context) error {
-	msg, err := b.Send(c.Chat(), "Search parameters ⚙", keyboards.SearchSettings.CreateKB())
+	kb := keyboards.SearchSettings.CreateKB()
+	msg, err := b.Send(c.Chat(), "Search parameters ⚙", &kb)
 	if err != nil {
 		return err
 	}
@@ -51,7 +52,8 @@ func handleSearchCmd(b *telebot.Bot, c telebot.Context) error {
 }
 
 func handleListCmd(b *telebot.Bot, c telebot.Context) error {
-	msg, err := b.Send(c.Chat(), "List parameters ⚙", keyboards.ListSettings.CreateKB())
+	kb := keyboards.ListSettings.CreateKB()
+	msg, err := b.Send(c.Chat(), "List parameters ⚙", &kb)
 	if err != nil {
 		return err
 	}
