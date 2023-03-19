@@ -157,7 +157,7 @@ func CreateTables(dbUrl string) error {
 	}
 
 	createUserDialogueData := `CREATE TABLE user_dialogue_data (
-		user_id TEXT PRIMARY KEY REFERENCES user_oauth_tokens(user_id), 
+		user_id TEXT PRIMARY KEY, 
 		dialogue_state JSON NOT NULL
 	);`
 	if _, err = dbpool.Exec(context.Background(), createUserDialogueData); err != nil {
