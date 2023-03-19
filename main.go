@@ -5,13 +5,14 @@ import (
 	"net/http"
 	"os"
 	"time"
+
 	"youtube_search_go_bot/commands"
 	"youtube_search_go_bot/db"
+	"youtube_search_go_bot/errors"
 	"youtube_search_go_bot/handlers"
 	"youtube_search_go_bot/logging"
 
-	"youtube_search_go_bot/errors"
-
+	_ "github.com/gin-gonic/gin"
 	"gopkg.in/telebot.v3"
 )
 
