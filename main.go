@@ -13,6 +13,7 @@ import (
 	"youtube_search_go_bot/logging"
 
 	_ "github.com/gin-gonic/gin"
+	_ "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gopkg.in/telebot.v3"
 )
 
