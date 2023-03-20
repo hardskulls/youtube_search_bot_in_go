@@ -23,6 +23,7 @@ const (
 	SearchExecute         SearchButton = "Search/Execute"
 )
 
+// Defines what to search: subscription or playlist.
 type SearchTarget string
 
 const (
@@ -30,6 +31,7 @@ const (
 	SearchTargetPlaylist     SearchTarget = "SearchTarget/Playlist"
 )
 
+// Defines what to search: subscription or playlist.
 type ListTarget string
 
 const (
@@ -37,6 +39,7 @@ const (
 	ListTargetPlaylist     ListTarget = "ListTarget/Playlist"
 )
 
+// Defines where to search user text: in title or in description.
 type SearchIn string
 
 const (

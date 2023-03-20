@@ -5,6 +5,7 @@ import (
 	"runtime"
 )
 
+// Panics on err and prints it.
 func ExitOnError(err error) {
 	if err != nil {
 		progCounter, file, line, _ := runtime.Caller(1) // Caller(1) for outer function, Caller(0) for this one.
@@ -12,6 +13,7 @@ func ExitOnError(err error) {
 	}
 }
 
+// Panics on empty string and prints specified message.
 func ExitOnEmptyString(str string, errMsg string) {
 	if str == "" {
 		progCounter, file, line, _ := runtime.Caller(1) // Caller(1) for outer function, Caller(0) for this one.

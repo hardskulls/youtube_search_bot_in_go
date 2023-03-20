@@ -7,6 +7,7 @@ import (
 	"golang.org/x/oauth2/google"
 )
 
+// Loads OAuth2 config.
 func LoadConfig() (*oauth2.Config, error) {
 	bytes, err := os.ReadFile("client_secret_web_app.json")
 	if err != nil {

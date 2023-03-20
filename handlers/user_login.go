@@ -11,6 +11,7 @@ import (
 	"youtube_search_go_bot/logging"
 )
 
+// Handle OAuth2 code.
 func GoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 	state := r.FormValue("state")
 

@@ -8,6 +8,7 @@ import (
 	"youtube_search_go_bot/errors"
 )
 
+// Creates url for YouTube authentification.
 func LogInUrl(userId int64) string {
 	state := dialogue.BuildKeyValueString(
 		[]dialogue.KVStruct{

@@ -1,5 +1,6 @@
 package commands
 
+// Bot commands.
 type Command string
 
 const (

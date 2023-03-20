@@ -7,18 +7,6 @@ type KVStruct struct {
 	Value string
 }
 
-type ListSettings struct {
-	ResultLimit uint16
-	Target      keyboards.SearchTarget
-	Sorting     keyboards.Sorting
-}
-
-type SearchSettings struct {
-	ResultLimit uint16
-	Target      keyboards.SearchTarget
-	SearchIn    keyboards.SearchIn
-}
-
 type Command string
 
 const (
@@ -33,6 +21,7 @@ const (
 	TargetPlaylist     Target = "Target/TargetPlaylist"
 )
 
+// Stores dialogue context and parameters required for bot commands.
 type DialogueData struct {
 	ActiveCmd         Command
 	LastCallback      string

@@ -30,6 +30,7 @@ func ExtractValue(st string, key string) (string, error) {
 	return value, nil
 }
 
+// Turn a list of key-value pairs into '&key=value&key=value' string.
 func BuildKeyValueString(kvPairs []KVStruct) string {
 	st := ""
 

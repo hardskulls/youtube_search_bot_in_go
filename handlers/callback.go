@@ -70,6 +70,7 @@ func RegisterCallbackHandlers(b *telebot.Bot) {
 	})
 }
 
+// Execute 'Search' or 'List' command.
 func Execute(b *telebot.Bot, c telebot.Context) error {
 	dbUrl := os.Getenv("DB_URL")
 	dialogueData, err := db.GetDialogueData(strconv.FormatInt(c.Sender().ID, 10), dbUrl)

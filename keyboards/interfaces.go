@@ -2,6 +2,7 @@ package keyboards
 
 import "gopkg.in/telebot.v3"
 
+// Creates a button.
 type CreateBtn interface {
 	CreateBtn() telebot.Btn
 }
@@ -88,6 +89,7 @@ func (sb SearchButton) CreateBtn() telebot.Btn {
 	return b
 }
 
+// Creates inline keyboard.
 type CreateKb interface {
 	CreateKb() telebot.ReplyMarkup
 }

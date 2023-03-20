@@ -89,17 +89,17 @@ func SaveDialogueData(userId string, dialogueData dialogue.DialogueData, dbURL s
 		return errors.New("jsonDialogueData is nil")
 	}
 
-	dbpool, err := pgxpool.Connect(context.Background(), dbURL)
+	dbPool, err := pgxpool.Connect(context.Background(), dbURL)
 	if err != nil {
 		return err
 	}
-	defer dbpool.Close()
+	defer dbPool.Close()
 
 	sqlStr := `INSERT INTO user_dialogue_data (user_id, dialogue_state)
 	VALUES ($1, $2)
 	ON CONFLICT (user_id)
 	DO UPDATE SET dialogue_state = $2;`
-	if _, err = dbpool.Exec(context.Background(), sqlStr, userId, dialogueData); err != nil {
+	if _, err = dbPool.Exec(context.Background(), sqlStr, userId, dialogueData); err != nil {
 		return err
 	}
 
@@ -135,24 +135,24 @@ func SaveChatId(user string, chatId string) error {
 }
 
 func CreateTables(dbUrl string) error {
-	dbpool, err := pgxpool.Connect(context.Background(), dbUrl)
+	dbPool, err := pgxpool.Connect(context.Background(), dbUrl)
 	if err != nil {
 		return err
 	}
-	defer dbpool.Close()
+	defer dbPool.Close()
 
 	dropTable1 := `DROP TABLE IF EXISTS user_dialogue_data;`
-	if _, err = dbpool.Exec(context.Background(), dropTable1); err != nil {
+	if _, err = dbPool.Exec(context.Background(), dropTable1); err != nil {
 		return err
 	}
 
 	dropTable2 := `DROP TABLE IF EXISTS user_oauth_tokens;`
-	if _, err = dbpool.Exec(context.Background(), dropTable2); err != nil {
+	if _, err = dbPool.Exec(context.Background(), dropTable2); err != nil {
 		return err
 	}
 
 	createUserOAuthTokens := `CREATE TABLE user_oauth_tokens(user_id TEXT PRIMARY KEY, jsoned_token JSON NOT NULL);`
-	if _, err = dbpool.Exec(context.Background(), createUserOAuthTokens); err != nil {
+	if _, err = dbPool.Exec(context.Background(), createUserOAuthTokens); err != nil {
 		return err
 	}
 
@@ -160,7 +160,7 @@ func CreateTables(dbUrl string) error {
 		user_id TEXT PRIMARY KEY, 
 		dialogue_state JSON NOT NULL
 	);`
-	if _, err = dbpool.Exec(context.Background(), createUserDialogueData); err != nil {
+	if _, err = dbPool.Exec(context.Background(), createUserDialogueData); err != nil {
 		return err
 	}
 
@@ -216,6 +216,7 @@ func SaveSorting(userId string, sorting keyboards.Sorting, dbUrl string) error {
 	return nil
 }
 
+// Revoke YouTube access token, and if request was successful, deletes token from db.
 func LogOut(userId, dbUrl string) error {
 	dbPool, err := pgxpool.Connect(context.Background(), dbUrl)
 	if err != nil {
