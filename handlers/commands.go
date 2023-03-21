@@ -77,14 +77,15 @@ func handleInfoCmd(b *telebot.Bot, c telebot.Context) error {
 	if dbUrl == "" {
 		return telebot.Err("wrong db url")
 	}
-	dialogueData, err := db.GetDialogueData(strconv.FormatInt(c.Message().Sender.ID, 10), dbUrl)
+	dData, err := db.GetDialogueData(strconv.FormatInt(c.Message().Sender.ID, 10), dbUrl)
 	if err != nil {
 		return err
 	}
 
 	text := fmt.Sprintf(
-		"Cureent state: \n Active command - %v \nTarget - %v \nResult limit - %v \nSearch in - %v \nSorting - %v",
-		dialogueData.ActiveCmd, dialogueData.Target, dialogueData.ResultLimit, dialogueData.SearchIn, dialogueData.Sorting,
+		"Cureent state: \n⌨ Active command : %v \n🎯 Target : %v \n🧮 Result limit : %v \n🏷 Search in : %v "+
+			"\n🗂 Sorting : %v \n💬 Text to search : %v",
+		dData.ActiveCmd, dData.Target, dData.ResultLimit, dData.SearchIn, dData.Sorting, dData.TextToSearch,
 	)
 
 	_, err = b.Send(c.Chat(), text)
@@ -102,9 +103,9 @@ func handleLogOutCmd(c telebot.Context) error {
 	}
 	err := db.LogOut(strconv.FormatInt(c.Sender().ID, 10), dbUrl)
 	if err != nil {
-		_ = c.Send("Log out command failed ")
+		_ = c.Send("Log out command failed ❌")
 	} else {
-		_ = c.Send("Logged out successfully!")
+		_ = c.Send("Logged out successfully ✅")
 	}
 	return nil
 }

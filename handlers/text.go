@@ -49,7 +49,7 @@ func handleText(b *telebot.Bot, c telebot.Context) error {
 		_, err = b.Send(c.Chat(), "Saved!")
 		return err
 	} else {
-		_, err := b.Send(c.Chat(), "Try sending some commands first!")
+		_, err := b.Send(c.Chat(), "Try sending some commands first ⌨")
 		return err
 	}
 }

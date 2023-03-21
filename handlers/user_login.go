@@ -13,8 +13,10 @@ import (
 
 // Handle OAuth2 code.
 func GoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
+	// All manually added parameters: user id, state code, etc.
 	state := r.FormValue("state")
 
+	// Additional value that to be checked for safety.
 	stateCode, err := dialogue.ExtractValue(state, "state_code")
 	if err != nil {
 		logging.LogError(err)
@@ -66,10 +68,6 @@ func GoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err = db.SaveOAuthToken(userId, token, dbUrl); err != nil {
-		logging.LogError(err)
-		return
-	}
-	if err = db.SaveDialogueData(userId, dialogue.DialogueData{}, dbUrl); err != nil {
 		logging.LogError(err)
 		return
 	}

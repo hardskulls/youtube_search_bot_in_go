@@ -65,7 +65,7 @@ func (lb ListButton) CreateBtn() telebot.Btn {
 	case ListResultLimit:
 		b.Text = "Result limit 📥"
 	case ListExecute:
-		b.Text = "Execute ✔"
+		b.Text = "Execute ✅"
 	}
 	return b
 }
@@ -81,10 +81,12 @@ func (sb SearchButton) CreateBtn() telebot.Btn {
 		b.Text = "Target 🎯"
 	case SearchSearchInOptions:
 		b.Text = "Search in 🗃"
+	case SearchTextToSearch:
+		b.Text = "Text to search 💬"
 	case SearchResultLimit:
 		b.Text = "Result limit 📥"
 	case SearchExecute:
-		b.Text = "Execute ✔"
+		b.Text = "Execute ✅"
 	}
 	return b
 }
