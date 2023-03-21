@@ -47,9 +47,8 @@ func SearchSubscriptions(token *oauth2.Token, textToSearch string, searchIn keyb
 	err = request.Pages(ctx, func(slr *youtube.SubscriptionListResponse) error {
 		for _, sub := range slr.Items {
 			if sub != nil {
-				s := strings.ToLower(compareSubscriptionsBy(sub, searchIn))
-				substr := strings.ToLower(textToSearch)
-				if strings.Contains(s, substr) {
+				s := compareSubscriptionsBy(sub, searchIn)
+				if strings.EqualFold(s, textToSearch) {
 					if len(buf) <= int(resultLim) {
 						buf = append(buf, sub)
 					} else {
@@ -88,9 +87,8 @@ func SearchPlaylists(token *oauth2.Token, textToSearch string, searchIn keyboard
 	err = request.Pages(ctx, func(resp *youtube.PlaylistListResponse) error {
 		for _, pl := range resp.Items {
 			if pl != nil {
-				s := strings.ToLower(comparePlaylistsBy(pl, searchIn))
-				substr := strings.ToLower(textToSearch)
-				if strings.Contains(s, substr) {
+				s := comparePlaylistsBy(pl, searchIn)
+				if strings.EqualFold(s, textToSearch) {
 					if len(buf) <= int(resultLim) {
 						buf = append(buf, pl)
 					} else {
