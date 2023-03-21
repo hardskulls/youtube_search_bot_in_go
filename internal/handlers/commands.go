@@ -6,10 +6,10 @@ import (
 	"gopkg.in/telebot.v3"
 	"os"
 	"strconv"
-	"youtube_search_go_bot/commands"
-	"youtube_search_go_bot/db"
-	"youtube_search_go_bot/dialogue"
-	"youtube_search_go_bot/keyboards"
+	"youtube_search_go_bot/internal/commands"
+	"youtube_search_go_bot/internal/db"
+	"youtube_search_go_bot/internal/dialogue"
+	"youtube_search_go_bot/internal/keyboards"
 )
 
 func RegisterCommandHandlers(b *telebot.Bot) {

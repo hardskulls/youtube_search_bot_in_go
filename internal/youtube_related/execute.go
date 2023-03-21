@@ -3,7 +3,7 @@ package youtube_related
 import (
 	"golang.org/x/oauth2"
 	"gopkg.in/telebot.v3"
-	"youtube_search_go_bot/dialogue"
+	"youtube_search_go_bot/internal/dialogue"
 )
 
 func ExecuteSearchCmd(token *oauth2.Token, dialogueData dialogue.DialogueData) ([]interface{ SearchedItem }, error) {

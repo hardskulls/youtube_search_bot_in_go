@@ -2,7 +2,7 @@ package youtube_related
 
 import (
 	"context"
-	config2 "youtube_search_go_bot/config"
+	config2 "youtube_search_go_bot/internal/config"
 
 	"golang.org/x/oauth2"
 	"google.golang.org/api/option"

@@ -5,10 +5,10 @@ import (
 	"errors"
 	"net/http"
 	"os"
-	"youtube_search_go_bot/config"
-	"youtube_search_go_bot/db"
-	"youtube_search_go_bot/dialogue"
-	"youtube_search_go_bot/logging"
+	"youtube_search_go_bot/internal/config"
+	"youtube_search_go_bot/internal/db"
+	"youtube_search_go_bot/internal/dialogue"
+	"youtube_search_go_bot/internal/logging"
 )
 
 // Handle OAuth2 code.

@@ -5,12 +5,11 @@ import (
 	"net/http"
 	"os"
 	"time"
-
-	"youtube_search_go_bot/commands"
-	"youtube_search_go_bot/db"
-	"youtube_search_go_bot/errors"
-	"youtube_search_go_bot/handlers"
-	"youtube_search_go_bot/logging"
+	"youtube_search_go_bot/internal/commands"
+	"youtube_search_go_bot/internal/db"
+	"youtube_search_go_bot/internal/errors"
+	handlers2 "youtube_search_go_bot/internal/handlers"
+	"youtube_search_go_bot/internal/logging"
 
 	//_ "github.com/gin-gonic/gin"
 	//tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -55,16 +54,16 @@ func main() {
 	err = bot.SetCommands(botCommands)
 	errors.ExitOnError(err)
 
-	handlers.RegisterCommandHandlers(bot)
-	handlers.RegisterTextHandlers(bot)
-	handlers.RegisterCallbackHandlers(bot)
+	handlers2.RegisterCommandHandlers(bot)
+	handlers2.RegisterTextHandlers(bot)
+	handlers2.RegisterCallbackHandlers(bot)
 
 	port, ok := os.LookupEnv("PORT")
 	if !ok {
 		log.Panicf("%v not set", port)
 	}
 
-	http.HandleFunc("/google_callback", handlers.GoogleCallbackHandler)
+	http.HandleFunc("/google_callback", handlers2.GoogleCallbackHandler)
 	go func() {
 		println("server started")
 		err := http.ListenAndServe(":"+port, nil)

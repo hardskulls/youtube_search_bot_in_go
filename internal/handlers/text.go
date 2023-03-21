@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"youtube_search_go_bot/db"
+	"youtube_search_go_bot/internal/db"
 )
 
 func RegisterTextHandlers(b *telebot.Bot) {

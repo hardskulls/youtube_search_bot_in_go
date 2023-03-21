@@ -6,8 +6,8 @@ import (
 	"golang.org/x/oauth2"
 	"google.golang.org/api/youtube/v3"
 	"sort"
-	"youtube_search_go_bot/keyboards"
-	"youtube_search_go_bot/logging"
+	"youtube_search_go_bot/internal/keyboards"
+	"youtube_search_go_bot/internal/logging"
 )
 
 func ListSubscriptions(token *oauth2.Token, sorting keyboards.Sorting, resultLim uint16) ([]*youtube.Subscription, error) {

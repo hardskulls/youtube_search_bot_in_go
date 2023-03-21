@@ -6,8 +6,8 @@ import (
 	"golang.org/x/oauth2"
 	"google.golang.org/api/youtube/v3"
 	"strings"
-	"youtube_search_go_bot/keyboards"
-	"youtube_search_go_bot/logging"
+	"youtube_search_go_bot/internal/keyboards"
+	"youtube_search_go_bot/internal/logging"
 )
 
 func compareSubscriptionsBy(sub *youtube.Subscription, searchIn keyboards.SearchIn) string {

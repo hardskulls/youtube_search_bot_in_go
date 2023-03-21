@@ -1,13 +1,12 @@
 package db
 
 import (
+	"golang.org/x/oauth2"
 	"runtime"
 	"strings"
 	"testing"
-	"youtube_search_go_bot/dialogue"
-	"youtube_search_go_bot/keyboards"
-
-	"golang.org/x/oauth2"
+	"youtube_search_go_bot/internal/dialogue"
+	"youtube_search_go_bot/internal/keyboards"
 )
 
 const databaseURL = "postgres://postgres:ex_pekt47jkO4y0u@localhost:5432/postgres"

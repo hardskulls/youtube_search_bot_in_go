@@ -1,6 +1,8 @@
 package dialogue
 
-import "youtube_search_go_bot/keyboards"
+import (
+	"youtube_search_go_bot/internal/keyboards"
+)
 
 type KVStruct struct {
 	Key   string

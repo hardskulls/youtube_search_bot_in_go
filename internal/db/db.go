@@ -4,18 +4,16 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/jackc/pgtype"
+	"github.com/jackc/pgx/v4/pgxpool"
+	"golang.org/x/oauth2"
 	"gopkg.in/telebot.v3"
 	"net/http"
 	"net/url"
 	"strings"
-	"youtube_search_go_bot/keyboards"
-	"youtube_search_go_bot/logging"
-
-	"golang.org/x/oauth2"
-	"youtube_search_go_bot/dialogue"
-
-	"github.com/jackc/pgtype"
-	"github.com/jackc/pgx/v4/pgxpool"
+	"youtube_search_go_bot/internal/dialogue"
+	"youtube_search_go_bot/internal/keyboards"
+	"youtube_search_go_bot/internal/logging"
 )
 
 func SaveOAuthToken(userId string, oauthToken *oauth2.Token, databaseURL string) error {

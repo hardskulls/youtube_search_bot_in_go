@@ -5,12 +5,12 @@ import (
 	"gopkg.in/telebot.v3"
 	"os"
 	"strconv"
-	"youtube_search_go_bot/db"
-	"youtube_search_go_bot/dialogue"
-	"youtube_search_go_bot/keyboards"
-	"youtube_search_go_bot/net"
-	"youtube_search_go_bot/utils"
-	"youtube_search_go_bot/youtube_related"
+	"youtube_search_go_bot/internal/db"
+	"youtube_search_go_bot/internal/dialogue"
+	"youtube_search_go_bot/internal/keyboards"
+	"youtube_search_go_bot/internal/net"
+	"youtube_search_go_bot/internal/utils"
+	youtube_related2 "youtube_search_go_bot/internal/youtube_related"
 )
 
 func RegisterCallbackHandlers(b *telebot.Bot) {
@@ -89,11 +89,11 @@ func Execute(b *telebot.Bot, c telebot.Context) error {
 		return err
 	}
 
-	var searchableItems []interface{ youtube_related.SearchedItem }
+	var searchableItems []interface{ youtube_related2.SearchedItem }
 
 	switch dialogueData.ActiveCmd {
 	case dialogue.SearchCommand:
-		r, err := youtube_related.ExecuteSearchCmd(token, dialogueData)
+		r, err := youtube_related2.ExecuteSearchCmd(token, dialogueData)
 		if err != nil {
 			text := fmt.Sprintf("You need to specify missing parameters for the "+
 				"command: \nResult limit - %v \nTarget - %v \nText to search - %v \nSearch in - %v",
@@ -105,7 +105,7 @@ func Execute(b *telebot.Bot, c telebot.Context) error {
 			searchableItems = r
 		}
 	case dialogue.ListCommand:
-		r, err := youtube_related.ExecuteListCmd(token, dialogueData)
+		r, err := youtube_related2.ExecuteListCmd(token, dialogueData)
 		if err != nil {
 			text := fmt.Sprintf("You need to specify missing parameters for the "+
 				"command: \nResult limit - %v \nTarget - %v \nSorting - %v",
