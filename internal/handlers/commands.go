@@ -2,14 +2,16 @@ package handlers
 
 import (
 	"fmt"
-	_ "github.com/go-telegram/bot"
-	"gopkg.in/telebot.v3"
 	"os"
 	"strconv"
 	"youtube_search_go_bot/internal/commands"
 	"youtube_search_go_bot/internal/db"
 	"youtube_search_go_bot/internal/dialogue"
 	"youtube_search_go_bot/internal/keyboards"
+	"youtube_search_go_bot/internal/logging"
+
+	_ "github.com/go-telegram/bot"
+	"gopkg.in/telebot.v3"
 )
 
 func RegisterCommandHandlers(b *telebot.Bot) {
@@ -17,16 +19,24 @@ func RegisterCommandHandlers(b *telebot.Bot) {
 		return c.Send("This bot lets you search stuff on your YouTube channel")
 	})
 	b.Handle(string(commands.Info), func(c telebot.Context) error {
-		return handleInfoCmd(b, c)
+		err := handleInfoCmd(b, c)
+		logging.LogError(err)
+		return err
 	})
 	b.Handle(string(commands.Search), func(c telebot.Context) error {
-		return handleSearchCmd(b, c)
+		err := handleSearchCmd(b, c)
+		logging.LogError(err)
+		return err
 	})
 	b.Handle(string(commands.List), func(c telebot.Context) error {
-		return handleListCmd(b, c)
+		err := handleListCmd(b, c)
+		logging.LogError(err)
+		return err
 	})
 	b.Handle(string(commands.LogOut), func(c telebot.Context) error {
-		return handleLogOutCmd(c)
+		err := handleLogOutCmd(c)
+		logging.LogError(err)
+		return err
 	})
 }
 
