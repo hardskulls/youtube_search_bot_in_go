@@ -22,8 +22,8 @@ func GoogleCallbackHandler(w http.ResponseWriter, r *http.Request) {
 		logging.LogError(err)
 		return
 	}
-	if stateCode != "kut987987_576fg78d5687lojfvkzr_85y6_435sgred_vnhgx_gdut" {
-		err = errors.New("state code is empty")
+	if stateCode != os.Getenv("STATE_CODE") {
+		err = errors.New("invalid state code")
 		logging.LogError(err)
 		return
 	}
