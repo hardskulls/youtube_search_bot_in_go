@@ -2,19 +2,22 @@ package handlers
 
 import (
 	"fmt"
-	"gopkg.in/telebot.v3"
 	"os"
 	"strconv"
 	"youtube_search_go_bot/internal/db"
 	"youtube_search_go_bot/internal/dialogue"
 	"youtube_search_go_bot/internal/keyboards"
+	"youtube_search_go_bot/internal/logging"
 	"youtube_search_go_bot/internal/net"
 	"youtube_search_go_bot/internal/utils"
 	youtube_related2 "youtube_search_go_bot/internal/youtube_related"
+
+	"gopkg.in/telebot.v3"
 )
 
 func RegisterCallbackHandlers(b *telebot.Bot) {
 	b.Handle(telebot.OnCallback, func(c telebot.Context) error {
+		logging.LogFuncStart("RegisterCallbackHandlers")
 		err := telebot.Err("Something went wrong!")
 
 		userId := c.Sender().ID
@@ -38,6 +41,7 @@ func RegisterCallbackHandlers(b *telebot.Bot) {
 		case string(keyboards.SearchCancel), string(keyboards.SearchSettings), string(keyboards.SearchResultLimit),
 			string(keyboards.SearchTargetOptions), string(keyboards.SearchSearchInOptions):
 			markup = keyboards.SearchButton(callback).CreateKB()
+			logging.LogVar(markup, "markup")
 		case string(keyboards.SearchExecute):
 			err := Execute(b, c)
 			return err
@@ -66,6 +70,8 @@ func RegisterCallbackHandlers(b *telebot.Bot) {
 		}
 
 		_, err = b.Edit(c.Callback(), &markup)
+		logging.LogError(err)
+		logging.LogFuncEnd("RegisterCallbackHandlers")
 		return err
 	})
 }
