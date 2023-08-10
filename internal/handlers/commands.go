@@ -15,6 +15,7 @@ import (
 )
 
 func RegisterCommandHandlers(b *telebot.Bot) {
+	logging.LogFuncStart("RegisterCommandHandlers")
 	b.Handle(string(commands.Start), func(c telebot.Context) error {
 		return c.Send("This bot lets you search stuff on your YouTube channel")
 	})
@@ -38,9 +39,11 @@ func RegisterCommandHandlers(b *telebot.Bot) {
 		logging.LogError(err)
 		return err
 	})
+	logging.LogFuncEnd("RegisterCommandHandlers")
 }
 
 func handleSearchCmd(b *telebot.Bot, c telebot.Context) error {
+	logging.LogFuncStart("handleSearchCmd")
 	kb := keyboards.SearchSettings.CreateKB()
 	msg, err := b.Send(c.Chat(), "Search parameters ⚙", &kb)
 	if err != nil {
@@ -57,11 +60,13 @@ func handleSearchCmd(b *telebot.Bot, c telebot.Context) error {
 	if err != nil {
 		return err
 	}
+	logging.LogFuncEnd("handleSearchCmd")
 
 	return nil
 }
 
 func handleListCmd(b *telebot.Bot, c telebot.Context) error {
+	logging.LogFuncStart("RegisterCommandHandlers")
 	kb := keyboards.ListSettings.CreateKB()
 	msg, err := b.Send(c.Chat(), "List parameters ⚙", &kb)
 	if err != nil {
@@ -78,17 +83,20 @@ func handleListCmd(b *telebot.Bot, c telebot.Context) error {
 	if err != nil {
 		return err
 	}
+	logging.LogFuncEnd("RegisterCommandHandlers")
 
 	return nil
 }
 
 func handleInfoCmd(b *telebot.Bot, c telebot.Context) error {
+	logging.LogFuncStart("handleInfoCmd")
 	dbUrl := os.Getenv("DB_URL")
 	if dbUrl == "" {
 		return telebot.Err("wrong db url")
 	}
 	dData, err := db.GetDialogueData(strconv.FormatInt(c.Message().Sender.ID, 10), dbUrl)
 	if err != nil {
+		logging.LogVar(dData, "dData is")
 		return err
 	}
 
@@ -102,11 +110,13 @@ func handleInfoCmd(b *telebot.Bot, c telebot.Context) error {
 	if err != nil {
 		return err
 	}
+	logging.LogFuncEnd("handleInfoCmd")
 
 	return nil
 }
 
 func handleLogOutCmd(c telebot.Context) error {
+	logging.LogFuncStart("RegisterCommandHandlers")
 	dbUrl := os.Getenv("DB_URL")
 	if dbUrl == "" {
 		return telebot.Err("wrong db url")
@@ -117,5 +127,6 @@ func handleLogOutCmd(c telebot.Context) error {
 	} else {
 		_ = c.Send("Logged out successfully ✅")
 	}
+	logging.LogFuncEnd("RegisterCommandHandlers")
 	return nil
 }
