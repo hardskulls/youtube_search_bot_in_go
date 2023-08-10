@@ -47,6 +47,7 @@ func handleSearchCmd(b *telebot.Bot, c telebot.Context) error {
 	kb := keyboards.SearchSettings.CreateKB()
 	msg, err := b.Send(c.Chat(), "Search parameters ⚙", &kb)
 	if err != nil {
+		logging.LogVar("b.Send error", "b.Send error")
 		return err
 	}
 
@@ -54,10 +55,12 @@ func handleSearchCmd(b *telebot.Bot, c telebot.Context) error {
 
 	dbUrl := os.Getenv("DB_URL")
 	if dbUrl == "" {
+		logging.LogVar("db error", "db error")
 		return telebot.Err("wrong db url")
 	}
 	err = db.SaveDialogueData(strconv.FormatInt(c.Update().Message.Sender.ID, 10), dialogueData, dbUrl)
 	if err != nil {
+		logging.LogVar("SaveDialogueData error", "SaveDialogueData error")
 		return err
 	}
 	logging.LogFuncEnd("handleSearchCmd")
