@@ -32,17 +32,26 @@ func RegisterCallbackHandlers(b *telebot.Bot) {
 		markup := *b.NewMarkup()
 
 		switch callback {
-		case string(keyboards.ListCancel), string(keyboards.ListSettings), string(keyboards.ListResultLimit),
+		case string(keyboards.ListCancel), string(keyboards.ListSettings),
 			string(keyboards.ListTargetOptions), string(keyboards.ListSortingOptions):
 			markup = keyboards.ListButton(callback).CreateKB()
+		case string(keyboards.ListResultLimit):
+			c.Send("Send result limit")
+			return nil
 		case string(keyboards.ListExecute):
 			err := Execute(b, c)
 			return err
 
-		case string(keyboards.SearchCancel), string(keyboards.SearchSettings), string(keyboards.SearchResultLimit),
+		case string(keyboards.SearchCancel), string(keyboards.SearchSettings),
 			string(keyboards.SearchTargetOptions), string(keyboards.SearchSearchInOptions):
 			markup = keyboards.SearchButton(callback).CreateKB()
 			logging.LogVar(markup, "markup")
+		case string(keyboards.SearchResultLimit):
+			e := c.Send("Send result limit")
+			return e
+		case string(keyboards.SearchTextToSearch):
+			e := c.Send("Send <b>text</b> to search", telebot.ModeHTML)
+			return e
 		case string(keyboards.SearchExecute):
 			err := Execute(b, c)
 			return err

@@ -100,8 +100,8 @@ func handleInfoCmd(b *telebot.Bot, c telebot.Context) error {
 	}
 	dData, err := db.GetDialogueData(strconv.FormatInt(c.Message().Sender.ID, 10), dbUrl)
 	if err != nil {
-		logging.LogVar(err, "err is")
-		return err
+		logging.LogVar(dData, "dData")
+		logging.LogError(err)
 	}
 
 	text := fmt.Sprintf(
