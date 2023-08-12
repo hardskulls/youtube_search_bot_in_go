@@ -21,7 +21,7 @@ func RegisterCallbackHandlers(b *telebot.Bot) {
 		logging.LogFuncStart("RegisterCallbackHandlers")
 		err := telebot.Err("Something went wrong!")
 
-		userId := c.Sender().ID
+		userId := strconv.FormatInt(c.Sender().ID, 10)
 		callback := c.Callback().Data
 
 		dbUrl := os.Getenv("DB_URL")
@@ -37,7 +37,8 @@ func RegisterCallbackHandlers(b *telebot.Bot) {
 			markup = keyboards.ListButton(callback).CreateKB()
 		case string(keyboards.ListResultLimit):
 			c.Send("Send result limit")
-			return nil
+			err = db.SaveLastCallback(userId, c.Callback().Data, dbUrl)
+			return err
 		case string(keyboards.ListExecute):
 			err := Execute(b, c)
 			return err
@@ -47,32 +48,34 @@ func RegisterCallbackHandlers(b *telebot.Bot) {
 			markup = keyboards.SearchButton(callback).CreateKB()
 			logging.LogVar(markup, "markup")
 		case string(keyboards.SearchResultLimit):
-			e := c.Send("Send result limit")
-			return e
+			c.Send("Send result limit")
+			err = db.SaveLastCallback(userId, c.Callback().Data, dbUrl)
+			return err
 		case string(keyboards.SearchTextToSearch):
-			e := c.Send("Send <b>text</b> to search", telebot.ModeHTML)
-			return e
+			c.Send("Send <b>text</b> to search", telebot.ModeHTML)
+			err = db.SaveLastCallback(userId, c.Callback().Data, dbUrl)
+			return err
 		case string(keyboards.SearchExecute):
 			err := Execute(b, c)
 			return err
 
 		case string(keyboards.SearchTargetSubscription), string(keyboards.SearchTargetPlaylist),
 			string(keyboards.ListTargetSubscription), string(keyboards.ListTargetPlaylist):
-			err := db.SaveTarget(strconv.FormatInt(userId, 10), callback, dbUrl)
+			err := db.SaveTarget(userId, callback, dbUrl)
 			if err != nil {
 				return err
 			}
 			markup = keyboards.SearchSettings.CreateKB()
 
 		case string(keyboards.SearchInTitle), string(keyboards.SearchInDescription):
-			err := db.SaveSearchIn(strconv.FormatInt(userId, 10), keyboards.SearchIn(callback), dbUrl)
+			err := db.SaveSearchIn(userId, keyboards.SearchIn(callback), dbUrl)
 			if err != nil {
 				return err
 			}
 			markup = keyboards.SearchSettings.CreateKB()
 
 		case string(keyboards.SortingDate), string(keyboards.SortingAlphabetical):
-			err := db.SaveSorting(strconv.FormatInt(userId, 10), keyboards.Sorting(callback), dbUrl)
+			err := db.SaveSorting(userId, keyboards.Sorting(callback), dbUrl)
 			if err != nil {
 				return err
 			}

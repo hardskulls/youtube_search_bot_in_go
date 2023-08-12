@@ -31,8 +31,8 @@ func SaveOAuthToken(userId string, oauthToken *oauth2.Token, databaseURL string)
 	}
 	defer dbPool.Close()
 
-	upsertTokens := `INSERT INTO user_oauth_tokens (user_id, jsoned_token) 
-	VALUES ($1, $2) 
+	upsertTokens := `INSERT INTO user_oauth_tokens (user_id, jsoned_token)
+	VALUES ($1, $2)
 	ON CONFLICT (user_id) DO UPDATE SET jsoned_token = $2;`
 	if _, err = dbPool.Exec(context.Background(), upsertTokens, userId, jsonedToken); err != nil {
 		return err
@@ -155,7 +155,7 @@ func CreateTables(dbUrl string) error {
 	}
 
 	createUserDialogueData := `CREATE TABLE user_dialogue_data (
-		user_id TEXT PRIMARY KEY, 
+		user_id TEXT PRIMARY KEY,
 		dialogue_state JSON NOT NULL
 	);`
 	if _, err = dbPool.Exec(context.Background(), createUserDialogueData); err != nil {
@@ -181,11 +181,7 @@ func SaveTarget(userId, target, dbUrl string) error {
 		return err
 	}
 	dialogueData.Target = t
-	err = SaveDialogueData(userId, dialogueData, dbUrl)
-	if err != nil {
-		return err
-	}
-	return nil
+	return SaveDialogueData(userId, dialogueData, dbUrl)
 }
 
 func SaveSearchIn(userId string, searchIn keyboards.SearchIn, dbUrl string) error {
@@ -194,11 +190,7 @@ func SaveSearchIn(userId string, searchIn keyboards.SearchIn, dbUrl string) erro
 		return err
 	}
 	dialogueData.SearchIn = searchIn
-	err = SaveDialogueData(userId, dialogueData, dbUrl)
-	if err != nil {
-		return err
-	}
-	return nil
+	return SaveDialogueData(userId, dialogueData, dbUrl)
 }
 
 func SaveSorting(userId string, sorting keyboards.Sorting, dbUrl string) error {
@@ -207,11 +199,16 @@ func SaveSorting(userId string, sorting keyboards.Sorting, dbUrl string) error {
 		return err
 	}
 	dialogueData.Sorting = sorting
-	err = SaveDialogueData(userId, dialogueData, dbUrl)
+	return SaveDialogueData(userId, dialogueData, dbUrl)
+}
+
+func SaveLastCallback(userId, lastCallback, dbUrl string) error {
+	dialogueData, err := GetDialogueData(userId, dbUrl)
 	if err != nil {
 		return err
 	}
-	return nil
+	dialogueData.LastCallback = lastCallback
+	return SaveDialogueData(userId, dialogueData, dbUrl)
 }
 
 // Revoke YouTube access token, and if request was successful, deletes token from db.
