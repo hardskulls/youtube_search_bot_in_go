@@ -14,17 +14,12 @@ func LogVar[T any](variable T, msg string) {
 	log.Println(emptyLine)
 
 	log.Println(separator)
-	log.Println(emptyLine)
 
 	log.Printf(fmt.Sprintf("[ LOG VAR Caller(1)] [ File and line: %v:%v | Message: '%v' ]", file, line, msg))
 	log.Printf(fmt.Sprintf("[ VAR ] Type is <| %T |> Value is [ <| %v |> ] ", variable, variable))
 
-	log.Println(emptyLine)
 	log.Println(separator)
 
-	log.Println(emptyLine)
-	log.Println(emptyLine)
-	log.Println(emptyLine)
 	log.Println(emptyLine)
 }
 
@@ -36,16 +31,11 @@ func LogLine() {
 	log.Println(emptyLine)
 
 	log.Println(separator)
-	log.Println(emptyLine)
 
 	log.Println(fmt.Sprintf("[ LOG LINE ] [ Line <| %v:%v |> successfully executed. ]", file, line))
 
-	log.Println(emptyLine)
 	log.Println(separator)
 
-	log.Println(emptyLine)
-	log.Println(emptyLine)
-	log.Println(emptyLine)
 	log.Println(emptyLine)
 }
 
@@ -58,16 +48,12 @@ func LogError(err error) {
 		log.Println(emptyLine)
 
 		log.Println(separator)
-		log.Println(emptyLine)
 
 		log.Println(fmt.Sprintf("[ ERROR ] : ( error is <| %v |> | file and line: <| %v:%v |> )", err, file, line))
 
 		log.Println(emptyLine)
 		log.Println(separator)
 
-		log.Println(emptyLine)
-		log.Println(emptyLine)
-		log.Println(emptyLine)
 		log.Println(emptyLine)
 	}
 }
@@ -79,16 +65,12 @@ func LogFuncStart(name string) {
 	log.Println(emptyLine)
 
 	log.Println(separator)
-	log.Println(emptyLine)
 
 	log.Println(fmt.Sprintf("[ STARTED <| '%v' |>. ]", name))
 
 	log.Println(emptyLine)
 	log.Println(separator)
 
-	log.Println(emptyLine)
-	log.Println(emptyLine)
-	log.Println(emptyLine)
 	log.Println(emptyLine)
 }
 
@@ -99,15 +81,11 @@ func LogFuncEnd(name string) {
 	log.Println(emptyLine)
 
 	log.Println(separator)
-	log.Println(emptyLine)
 
 	log.Println(fmt.Sprintf("[ ENDED <| '%v' |>. ]", name))
 
 	log.Println(emptyLine)
 	log.Println(separator)
 
-	log.Println(emptyLine)
-	log.Println(emptyLine)
-	log.Println(emptyLine)
 	log.Println(emptyLine)
 }
