@@ -51,7 +51,6 @@ func LogError(err error) {
 
 		log.Println(fmt.Sprintf("[ ERROR ] : ( error is <| %v |> | file and line: <| %v:%v |> )", err, file, line))
 
-		log.Println(emptyLine)
 		log.Println(separator)
 
 		log.Println(emptyLine)
@@ -68,7 +67,6 @@ func LogFuncStart(name string) {
 
 	log.Println(fmt.Sprintf("[ STARTED <| '%v' |>. ]", name))
 
-	log.Println(emptyLine)
 	log.Println(separator)
 
 	log.Println(emptyLine)
@@ -84,7 +82,6 @@ func LogFuncEnd(name string) {
 
 	log.Println(fmt.Sprintf("[ ENDED <| '%v' |>. ]", name))
 
-	log.Println(emptyLine)
 	log.Println(separator)
 
 	log.Println(emptyLine)
