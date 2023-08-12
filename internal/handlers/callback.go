@@ -93,7 +93,7 @@ func Execute(b *telebot.Bot, c telebot.Context) error {
 			htmlizer.StrongBold("log in"),
 			htmlizer.InlineURL(htmlizer.Bold("Log In"), net.LogInUrl(c.Sender().ID)),
 		)
-		_, _ = b.Send(c.Chat(), text)
+		_, _ = b.Send(c.Chat(), text, telebot.ModeHTML)
 		return err
 	}
 
