@@ -127,7 +127,6 @@ func (lb ListButton) CreateKB() telebot.ReplyMarkup {
 		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(ListResultLimit)
 		replyMarkup.InlineKeyboard[2] = CreateInlineButtonRow(ListExecute, ListCancel)
 	case ListResultLimit:
-		replyMarkup.Text("Send result limit")
 	case ListTargetOptions:
 		replyMarkup.InlineKeyboard = make([][]telebot.InlineButton, 2)
 		replyMarkup.InlineKeyboard[0] = CreateInlineButtonRow(ListTargetSubscription, ListTargetPlaylist)
@@ -157,7 +156,6 @@ func (sb SearchButton) CreateKB() telebot.ReplyMarkup {
 		replyMarkup.InlineKeyboard[1] = CreateInlineButtonRow(SearchResultLimit, SearchTextToSearch)
 		replyMarkup.InlineKeyboard[2] = CreateInlineButtonRow(SearchExecute, SearchCancel)
 	case SearchResultLimit:
-		replyMarkup.Text("Send result limit")
 	case SearchTargetOptions:
 		replyMarkup.InlineKeyboard = make([][]telebot.InlineButton, 2)
 		replyMarkup.InlineKeyboard[0] = CreateInlineButtonRow(SearchTargetSubscription, SearchTargetPlaylist)

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -80,6 +81,7 @@ func RegisterCallbackHandlers(b *telebot.Bot) {
 
 // Execute 'Search' or 'List' command.
 func Execute(b *telebot.Bot, c telebot.Context) error {
+	logging.LogFuncStart("Execute")
 	dbUrl := os.Getenv("DB_URL")
 	dialogueData, err := db.GetDialogueData(strconv.FormatInt(c.Sender().ID, 10), dbUrl)
 	if err != nil {
@@ -108,6 +110,10 @@ func Execute(b *telebot.Bot, c telebot.Context) error {
 			logging.LogError(e)
 			return err
 		}
+	default:
+		err := errors.New("hit default case in switch statement")
+		logging.LogError(err)
+		return err
 	}
 
 	for _, item := range searchableItems {
@@ -116,6 +122,7 @@ func Execute(b *telebot.Bot, c telebot.Context) error {
 	}
 
 	_, _ = b.Send(c.Chat(), fmt.Sprintf("Found %v results", len(searchableItems)))
+	logging.LogFuncEnd("Execute")
 
 	return nil
 }
