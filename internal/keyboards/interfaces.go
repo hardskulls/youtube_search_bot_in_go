@@ -172,17 +172,17 @@ func (sb SearchButton) CreateKB() telebot.ReplyMarkup {
 	return replyMarkup
 }
 
-func CreateBtnRow(iFaces ...interface{ CreateBtn }) telebot.Row {
+func CreateBtnRow(buttons ...interface{ CreateBtn }) telebot.Row {
 	var row telebot.Row
-	for _, btn := range iFaces {
+	for _, btn := range buttons {
 		row = append(row, btn.CreateBtn())
 	}
 	return row
 }
 
-func CreateInlineButtonRow(iFaces ...interface{ CreateBtn }) []telebot.InlineButton {
+func CreateInlineButtonRow(buttons ...interface{ CreateBtn }) []telebot.InlineButton {
 	var row []telebot.InlineButton
-	for _, btn := range iFaces {
+	for _, btn := range buttons {
 		row = append(row, *btn.CreateBtn().Inline())
 	}
 	return row

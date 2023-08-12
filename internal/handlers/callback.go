@@ -70,7 +70,9 @@ func RegisterCallbackHandlers(b *telebot.Bot) {
 		}
 
 		_, err = b.Edit(c.Callback(), &markup)
-		logging.LogError(err)
+		if err != nil {
+			logging.LogError(err)
+		}
 		logging.LogFuncEnd("RegisterCallbackHandlers")
 		return err
 	})

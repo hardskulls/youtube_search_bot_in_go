@@ -95,11 +95,12 @@ func handleInfoCmd(b *telebot.Bot, c telebot.Context) error {
 	logging.LogFuncStart("handleInfoCmd")
 	dbUrl := os.Getenv("DB_URL")
 	if dbUrl == "" {
+		logging.LogVar("dbUrl error", "dbUrl error")
 		return telebot.Err("wrong db url")
 	}
 	dData, err := db.GetDialogueData(strconv.FormatInt(c.Message().Sender.ID, 10), dbUrl)
 	if err != nil {
-		logging.LogVar(dData, "dData is")
+		logging.LogVar(err, "err is")
 		return err
 	}
 
@@ -111,6 +112,7 @@ func handleInfoCmd(b *telebot.Bot, c telebot.Context) error {
 
 	_, err = b.Send(c.Chat(), text)
 	if err != nil {
+		logging.LogVar(err, "err is")
 		return err
 	}
 	logging.LogFuncEnd("handleInfoCmd")
