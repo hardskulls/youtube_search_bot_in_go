@@ -69,10 +69,10 @@ func RegisterCallbackHandlers(b *telebot.Bot) {
 			markup = keyboards.SearchSettings.CreateKB()
 		}
 
-		_, err = b.Edit(c.Callback(), &markup)
-		if err != nil {
-			logging.LogError(err)
-		}
+		m, err := b.Edit(c.Callback(), &markup)
+		logging.LogError(err)
+		logging.LogVar(markup, "markup")
+		logging.LogVar(m, "m")
 		logging.LogFuncEnd("RegisterCallbackHandlers")
 		return err
 	})
@@ -87,13 +87,7 @@ func Execute(b *telebot.Bot, c telebot.Context) error {
 	}
 	token, err := db.GetOAuthToken(strconv.FormatInt(c.Sender().ID, 10), dbUrl)
 	if err != nil {
-		htmlizer := utils.HTMLizer{}
-		text := fmt.Sprintf(
-			"To %v with your account, follow this link: \r%v",
-			htmlizer.StrongBold("log in"),
-			htmlizer.InlineURL(htmlizer.Bold("Log In"), net.LogInUrl(c.Sender().ID)),
-		)
-		_, _ = b.Send(c.Chat(), text, telebot.ModeHTML)
+		sendLoginMsg(c, b)
 		return err
 	}
 
@@ -101,37 +95,59 @@ func Execute(b *telebot.Bot, c telebot.Context) error {
 
 	switch dialogueData.ActiveCmd {
 	case dialogue.SearchCommand:
-		r, err := youtube_related2.ExecuteSearchCmd(token, dialogueData)
+		searchableItems, err = youtube_related2.ExecuteSearchCmd(token, dialogueData)
 		if err != nil {
-			text := fmt.Sprintf("You need to specify missing parameters for the "+
-				"command: \nResult limit - %v \nTarget - %v \nText to search - %v \nSearch in - %v",
-				dialogueData.ResultLimit, dialogueData.Target, dialogueData.TextToSearch, dialogueData.SearchIn,
-			)
-			_, err := b.Send(c.Chat(), text)
+			_, e := b.Send(c.Chat(), sendMissingSearchParams(dialogueData))
+			logging.LogError(e)
 			return err
-		} else {
-			searchableItems = r
 		}
 	case dialogue.ListCommand:
-		r, err := youtube_related2.ExecuteListCmd(token, dialogueData)
+		searchableItems, err = youtube_related2.ExecuteListCmd(token, dialogueData)
 		if err != nil {
-			text := fmt.Sprintf("You need to specify missing parameters for the "+
-				"command: \nResult limit - %v \nTarget - %v \nSorting - %v",
-				dialogueData.ResultLimit, dialogueData.Target, dialogueData.Sorting,
-			)
-			_, err := b.Send(c.Chat(), text)
+			_, e := b.Send(c.Chat(), sendMissingListParams(dialogueData))
+			logging.LogError(e)
 			return err
-		} else {
-			searchableItems = r
 		}
 	}
 
 	for _, item := range searchableItems {
-		text := fmt.Sprintf("<b>%v</b>, \n\n%v, \n\n%v, \n\n%v", item.Title(), item.Description(), item.Date(), item.Link())
+		text := formatResult(item)
 		_, _ = b.Send(c.Chat(), text, telebot.ModeHTML)
 	}
 
 	_, _ = b.Send(c.Chat(), fmt.Sprintf("Found %v results", len(searchableItems)))
 
 	return nil
+}
+
+func formatResult(item interface{youtube_related2.SearchedItem}) string {
+	text := fmt.Sprintf("<b>%v</b>, \n\n%v, \n\n%v, \n\n%v", item.Title(), item.Description(), item.Date(), item.Link())
+	return text
+}
+
+func sendMissingListParams(dialogueData dialogue.DialogueData) string {
+	text := fmt.Sprintf("You need to specify missing parameters for the "+
+		"command: \nResult limit - %v \nTarget - %v \nSorting - %v",
+		dialogueData.ResultLimit, dialogueData.Target, dialogueData.Sorting,
+	)
+	return text
+}
+
+func sendMissingSearchParams(dialogueData dialogue.DialogueData) string {
+	text := fmt.Sprintf("You need to specify missing parameters for the "+
+		"command: \nResult limit - %v \nTarget - %v \nText to search - %v \nSearch in - %v",
+		dialogueData.ResultLimit, dialogueData.Target, dialogueData.TextToSearch, dialogueData.SearchIn,
+	)
+	return text
+}
+
+func sendLoginMsg(c telebot.Context, b *telebot.Bot) {
+	htmlizer := utils.HTMLizer{}
+
+	logIn := htmlizer.StrongBold("log in")
+	link := htmlizer.InlineURL(htmlizer.Bold("Log In"), net.LogInUrl(c.Sender().ID))
+
+	text := fmt.Sprintf("To %v with your account, follow this link: \r%v", logIn, link)
+	_, err := b.Send(c.Chat(), text, telebot.ModeHTML)
+	logging.LogError(err)
 }
