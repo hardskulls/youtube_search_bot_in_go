@@ -17,6 +17,7 @@ import (
 )
 
 func main() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	logging.LogFuncStart("main")
 	println("main function started")
 

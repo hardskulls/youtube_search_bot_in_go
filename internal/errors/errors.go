@@ -1,9 +1,19 @@
 package errors
 
 import (
+	"fmt"
 	"log"
 	"runtime"
 )
+
+type Err struct {
+	Msg, OccuredAt string
+}
+
+func New(msg string) Err {
+	_, file, line, _ := runtime.Caller(1)
+	return Err {Msg: msg, OccuredAt: fmt.Sprintf("file ~ %v || line ~ %v", file, line)}
+}
 
 // Panics on err and prints it.
 func ExitOnError(err error) {
