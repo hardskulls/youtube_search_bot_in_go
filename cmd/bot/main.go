@@ -17,7 +17,7 @@ import (
 )
 
 func main() {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	log.SetFlags(log.LstdFlags)
 	logging.LogFuncStart("main")
 	println("main function started")
 
@@ -66,11 +66,9 @@ func main() {
 
 	http.HandleFunc("/google_callback", handlers2.GoogleCallbackHandler)
 	go func() {
-		println("server started")
+		log.Println("server started")
 		err := http.ListenAndServe(":"+port, nil)
-		if err != nil {
-			errors.ExitOnError(err)
-		}
+		errors.ExitOnError(err)
 	}()
 
 	println("bot starting")

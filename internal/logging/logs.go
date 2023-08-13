@@ -42,6 +42,7 @@ func LogLine() {
 func LogError(err error) {
 	if err != nil {
 		_, file, line, _ := runtime.Caller(1) // Caller(1) for outer function, Caller(0) for this one.
+		_, file_2, line_2, _ := runtime.Caller(4) // Caller(4) for outer function, Caller(0) for this one.
 		separator := "------------------------------------------------------"
 		emptyLine := "                                                      "
 
@@ -49,7 +50,8 @@ func LogError(err error) {
 
 		log.Println(separator)
 
-		log.Println(fmt.Sprintf("[ ERROR ] : ( error is <| %v |> | file and line: <| %v:%v |> )", err, file, line))
+		log.Println(fmt.Sprintf("[ ERROR Caller(1) ] : ( error is <| %v |> | file and line: <| %v:%v |> )", err, file, line))
+		log.Println(fmt.Sprintf("[ ERROR Caller(4) ] : ( error is <| %v |> | file and line: <| %v:%v |> )", err, file_2, line_2))
 
 		log.Println(separator)
 
