@@ -139,22 +139,12 @@ func CreateTables(dbUrl string) error {
 	}
 	defer dbPool.Close()
 
-	dropTable1 := `DROP TABLE IF EXISTS user_dialogue_data;`
-	if _, err = dbPool.Exec(context.Background(), dropTable1); err != nil {
-		return err
-	}
-
-	dropTable2 := `DROP TABLE IF EXISTS user_oauth_tokens;`
-	if _, err = dbPool.Exec(context.Background(), dropTable2); err != nil {
-		return err
-	}
-
-	createUserOAuthTokens := `CREATE TABLE user_oauth_tokens(user_id TEXT PRIMARY KEY, jsoned_token JSON NOT NULL);`
+	createUserOAuthTokens := `CREATE TABLE IF NOT EXISTS user_oauth_tokens(user_id TEXT PRIMARY KEY, jsoned_token JSON NOT NULL);`
 	if _, err = dbPool.Exec(context.Background(), createUserOAuthTokens); err != nil {
 		return err
 	}
 
-	createUserDialogueData := `CREATE TABLE user_dialogue_data (
+	createUserDialogueData := `CREATE TABLE IF NOT EXISTS user_dialogue_data (
 		user_id TEXT PRIMARY KEY,
 		dialogue_state JSON NOT NULL
 	);`
@@ -211,7 +201,7 @@ func SaveLastCallback(userId, lastCallback, dbUrl string) error {
 	return SaveDialogueData(userId, dialogueData, dbUrl)
 }
 
-// Revoke YouTube access token, and if request was successful, deletes token from db.
+// LogOut Revoke YouTube access token, and if request was successful, deletes token from db.
 func LogOut(userId, dbUrl string) error {
 	dbPool, err := pgxpool.Connect(context.Background(), dbUrl)
 	if err != nil {
