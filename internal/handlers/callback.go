@@ -59,13 +59,19 @@ func RegisterCallbackHandlers(b *telebot.Bot) {
 			err := Execute(b, c)
 			return err
 
-		case string(keyboards.SearchTargetSubscription), string(keyboards.SearchTargetPlaylist),
-			string(keyboards.ListTargetSubscription), string(keyboards.ListTargetPlaylist):
+		case string(keyboards.SearchTargetSubscription), string(keyboards.SearchTargetPlaylist):
 			err := db.SaveTarget(userId, callback, dbUrl)
 			if err != nil {
 				return err
 			}
 			markup = keyboards.SearchSettings.CreateKB()
+
+		case string(keyboards.ListTargetSubscription), string(keyboards.ListTargetPlaylist):
+			err := db.SaveTarget(userId, callback, dbUrl)
+			if err != nil {
+				return err
+			}
+			markup = keyboards.ListSettings.CreateKB()
 
 		case string(keyboards.SearchInTitle), string(keyboards.SearchInDescription):
 			err := db.SaveSearchIn(userId, keyboards.SearchIn(callback), dbUrl)
@@ -79,7 +85,7 @@ func RegisterCallbackHandlers(b *telebot.Bot) {
 			if err != nil {
 				return err
 			}
-			markup = keyboards.SearchSettings.CreateKB()
+			markup = keyboards.ListSettings.CreateKB()
 		}
 
 		m, err := b.Edit(c.Callback(), &markup)
