@@ -49,7 +49,7 @@ func SearchSubscriptions(token *oauth2.Token, textToSearch string, searchIn keyb
 		for _, sub := range slr.Items {
 			if sub != nil {
 				s := strings.ToLower(compareSubscriptionsBy(sub, searchIn))
-				if strings.EqualFold(s, strings.ToLower(textToSearch)) {
+				if strings.Contains(s, strings.ToLower(textToSearch)) {
 					if len(buf) <= int(resultLim) {
 						buf = append(buf, sub)
 					} else {
@@ -97,7 +97,7 @@ func SearchPlaylists(
 		for _, pl := range resp.Items {
 			if pl != nil {
 				s := strings.ToLower(comparePlaylistsBy(pl, searchIn))
-				if strings.EqualFold(s, strings.ToLower(textToSearch)) {
+				if strings.Contains(s, strings.ToLower(textToSearch)) {
 					if len(buf) <= int(resultLim) {
 						buf = append(buf, pl)
 					} else {
