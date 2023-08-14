@@ -3,11 +3,12 @@ package youtube_related
 import (
 	"context"
 	"errors"
-	"golang.org/x/oauth2"
-	"google.golang.org/api/youtube/v3"
 	"sort"
 	"youtube_search_go_bot/internal/keyboards"
 	"youtube_search_go_bot/internal/logging"
+
+	"golang.org/x/oauth2"
+	"google.golang.org/api/youtube/v3"
 )
 
 func ListSubscriptions(token *oauth2.Token, sorting keyboards.Sorting, resultLim uint16) ([]*youtube.Subscription, error) {

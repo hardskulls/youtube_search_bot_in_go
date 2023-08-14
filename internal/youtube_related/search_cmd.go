@@ -11,7 +11,6 @@ import (
 )
 
 func compareSubscriptionsBy(sub *youtube.Subscription, searchIn keyboards.SearchIn) string {
-	logging.LogFuncStart("compareSubscriptionsBy")
 	res := ""
 	switch searchIn {
 	case keyboards.SearchInTitle:
@@ -19,12 +18,10 @@ func compareSubscriptionsBy(sub *youtube.Subscription, searchIn keyboards.Search
 	case keyboards.SearchInDescription:
 		res = sub.Snippet.Description
 	}
-	logging.LogFuncEnd("compareSubscriptionsBy")
 	return res
 }
 
 func comparePlaylistsBy(pl *youtube.Playlist, searchIn keyboards.SearchIn) string {
-	logging.LogFuncStart("comparePlaylistsBy")
 	res := ""
 	switch searchIn {
 	case keyboards.SearchInTitle:
@@ -32,7 +29,6 @@ func comparePlaylistsBy(pl *youtube.Playlist, searchIn keyboards.SearchIn) strin
 	case keyboards.SearchInDescription:
 		res = pl.Snippet.Description
 	}
-	logging.LogFuncEnd("comparePlaylistsBy")
 	return res
 }
 
@@ -52,8 +48,8 @@ func SearchSubscriptions(token *oauth2.Token, textToSearch string, searchIn keyb
 	err = request.Pages(ctx, func(slr *youtube.SubscriptionListResponse) error {
 		for _, sub := range slr.Items {
 			if sub != nil {
-				s := compareSubscriptionsBy(sub, searchIn)
-				if strings.EqualFold(s, textToSearch) {
+				s := strings.ToLower(compareSubscriptionsBy(sub, searchIn))
+				if strings.EqualFold(s, strings.ToLower(textToSearch)) {
 					if len(buf) <= int(resultLim) {
 						buf = append(buf, sub)
 					} else {
@@ -100,8 +96,8 @@ func SearchPlaylists(
 	err = request.Pages(ctx, func(resp *youtube.PlaylistListResponse) error {
 		for _, pl := range resp.Items {
 			if pl != nil {
-				s := comparePlaylistsBy(pl, searchIn)
-				if strings.EqualFold(s, textToSearch) {
+				s := strings.ToLower(comparePlaylistsBy(pl, searchIn))
+				if strings.EqualFold(s, strings.ToLower(textToSearch)) {
 					if len(buf) <= int(resultLim) {
 						buf = append(buf, pl)
 					} else {

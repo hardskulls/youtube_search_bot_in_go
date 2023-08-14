@@ -10,27 +10,27 @@ import (
 
 func ExecuteSearchCmd(
 	token *oauth2.Token,
-	dialogueData dialogue.DialogueData,
+	dData dialogue.DialogueData,
 ) (
 	[]interface{ SearchedItem },
 	error,
 ) {
-	if dialogueData.ResultLimit < 1 ||
-		dialogueData.Target == "" ||
-		dialogueData.TextToSearch == "" ||
-		dialogueData.SearchIn == "" {
+	if dData.ResultLimit < 1 ||
+		dData.Target == "" ||
+		dData.TextToSearch == "" ||
+		dData.SearchIn == "" {
 		err := telebot.Err("ExecuteSearchCmd : some parameters are not set")
 		logging.LogError(err)
 		return nil, err
 	}
 	var searchedItems []interface{ SearchedItem }
-	switch dialogueData.Target {
+	switch dData.Target {
 	case dialogue.TargetSubscription:
 		results, err := SearchSubscriptions(
 			token,
-			dialogueData.TextToSearch,
-			dialogueData.SearchIn,
-			dialogueData.ResultLimit,
+			dData.TextToSearch,
+			dData.SearchIn,
+			dData.ResultLimit,
 		)
 		if err != nil {
 			return searchedItems, err
@@ -44,9 +44,9 @@ func ExecuteSearchCmd(
 	case dialogue.TargetPlaylist:
 		results, err := SearchPlaylists(
 			token,
-			dialogueData.TextToSearch,
-			dialogueData.SearchIn,
-			dialogueData.ResultLimit,
+			dData.TextToSearch,
+			dData.SearchIn,
+			dData.ResultLimit,
 		)
 		if err != nil {
 			return searchedItems, err
@@ -64,23 +64,23 @@ func ExecuteSearchCmd(
 
 func ExecuteListCmd(
 	token *oauth2.Token,
-	dialogueData dialogue.DialogueData,
+	dData dialogue.DialogueData,
 ) (
 	[]interface{ SearchedItem },
 	error,
 ) {
 	logging.LogFuncStart("ExecuteListCmd")
-	if dialogueData.ResultLimit < 1 ||
-		dialogueData.Target == "" ||
-		dialogueData.Sorting == "" {
+	if dData.ResultLimit < 1 ||
+		dData.Target == "" ||
+		dData.Sorting == "" {
 		err := telebot.Err("ExecuteListCmd : some parameters are not set")
 		logging.LogError(err)
 		return nil, err
 	}
 	var searchedItems []interface{ SearchedItem }
-	switch dialogueData.Target {
+	switch dData.Target {
 	case dialogue.TargetSubscription:
-		results, err := ListSubscriptions(token, dialogueData.Sorting, dialogueData.ResultLimit)
+		results, err := ListSubscriptions(token, dData.Sorting, dData.ResultLimit)
 		if err != nil {
 			return searchedItems, err
 		}
@@ -91,7 +91,7 @@ func ExecuteListCmd(
 		logging.LogFuncEnd("ExecuteListCmd")
 		return searchedItems, nil
 	case dialogue.TargetPlaylist:
-		results, err := ListPlaylists(token, dialogueData.Sorting, dialogueData.ResultLimit)
+		results, err := ListPlaylists(token, dData.Sorting, dData.ResultLimit)
 		if err != nil {
 			return searchedItems, err
 		}
