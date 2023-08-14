@@ -107,6 +107,8 @@ func Execute(b *telebot.Bot, c telebot.Context) error {
 
 	var searchableItems []interface{ youtube_related2.SearchedItem }
 
+	err = c.Send("Searching, please wait 🕵️‍♂️")
+	logging.LogError(err)
 	switch dialogueData.ActiveCmd {
 	case dialogue.SearchCommand:
 		searchableItems, err = youtube_related2.ExecuteSearchCmd(token, dialogueData)
@@ -139,7 +141,7 @@ func Execute(b *telebot.Bot, c telebot.Context) error {
 	return nil
 }
 
-func formatResult(item interface{youtube_related2.SearchedItem}) string {
+func formatResult(item interface{ youtube_related2.SearchedItem }) string {
 	text := fmt.Sprintf("<b>%v</b>, \n\n%v, \n\n%v, \n\n%v", item.Title(), item.Description(), item.Date(), item.Link())
 	return text
 }
