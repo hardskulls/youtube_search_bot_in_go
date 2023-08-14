@@ -13,7 +13,7 @@ func (s *SubscriptionAlias) Description() string {
 }
 
 func (s *SubscriptionAlias) Link() string {
-	return "https://youtube.com/channel/" + s.Id
+	return "https://youtube.com/channel/" + s.Snippet.ResourceId.ChannelId
 }
 
 func (s *SubscriptionAlias) Date() string {

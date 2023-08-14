@@ -3,11 +3,12 @@ package youtube_related
 import (
 	"context"
 	"errors"
-	"golang.org/x/oauth2"
-	"google.golang.org/api/youtube/v3"
 	"strings"
 	"youtube_search_go_bot/internal/keyboards"
 	"youtube_search_go_bot/internal/logging"
+
+	"golang.org/x/oauth2"
+	"google.golang.org/api/youtube/v3"
 )
 
 func compareSubscriptionsBy(sub *youtube.Subscription, searchIn keyboards.SearchIn) string {
