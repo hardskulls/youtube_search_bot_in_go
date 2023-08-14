@@ -33,7 +33,8 @@ func ExecuteSearchCmd(
 			dData.ResultLimit,
 		)
 		if err != nil {
-			return searchedItems, err
+			logging.LogError(err)
+			return searchedItems, nil
 		}
 		for _, s := range results {
 			ns := SubscriptionAlias(*s)
@@ -49,7 +50,8 @@ func ExecuteSearchCmd(
 			dData.ResultLimit,
 		)
 		if err != nil {
-			return searchedItems, err
+			logging.LogError(err)
+			return searchedItems, nil
 		}
 		for _, p := range results {
 			ns := PlaylistAlias(*p)
@@ -82,7 +84,8 @@ func ExecuteListCmd(
 	case dialogue.TargetSubscription:
 		results, err := ListSubscriptions(token, dData.Sorting, dData.ResultLimit)
 		if err != nil {
-			return searchedItems, err
+			logging.LogError(err)
+			return searchedItems, nil
 		}
 		for _, s := range results {
 			ns := SubscriptionAlias(*s)
@@ -93,7 +96,8 @@ func ExecuteListCmd(
 	case dialogue.TargetPlaylist:
 		results, err := ListPlaylists(token, dData.Sorting, dData.ResultLimit)
 		if err != nil {
-			return searchedItems, err
+			logging.LogError(err)
+			return searchedItems, nil
 		}
 		for _, p := range results {
 			ns := PlaylistAlias(*p)
