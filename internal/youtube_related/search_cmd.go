@@ -11,6 +11,7 @@ import (
 )
 
 func compareSubscriptionsBy(sub *youtube.Subscription, searchIn keyboards.SearchIn) string {
+	logging.LogFuncStart("compareSubscriptionsBy")
 	res := ""
 	switch searchIn {
 	case keyboards.SearchInTitle:
@@ -18,10 +19,12 @@ func compareSubscriptionsBy(sub *youtube.Subscription, searchIn keyboards.Search
 	case keyboards.SearchInDescription:
 		res = sub.Snippet.Description
 	}
+	logging.LogFuncEnd("compareSubscriptionsBy")
 	return res
 }
 
 func comparePlaylistsBy(pl *youtube.Playlist, searchIn keyboards.SearchIn) string {
+	logging.LogFuncStart("comparePlaylistsBy")
 	res := ""
 	switch searchIn {
 	case keyboards.SearchInTitle:
@@ -29,10 +32,12 @@ func comparePlaylistsBy(pl *youtube.Playlist, searchIn keyboards.SearchIn) strin
 	case keyboards.SearchInDescription:
 		res = pl.Snippet.Description
 	}
+	logging.LogFuncEnd("comparePlaylistsBy")
 	return res
 }
 
 func SearchSubscriptions(token *oauth2.Token, textToSearch string, searchIn keyboards.SearchIn, resultLim uint16) ([]*youtube.Subscription, error) {
+	logging.LogFuncStart("SearchSubscriptions")
 	ctx := context.Background()
 	youtubeService, err := newYouTubeService(token)
 	if err != nil {
@@ -61,10 +66,12 @@ func SearchSubscriptions(token *oauth2.Token, textToSearch string, searchIn keyb
 	})
 	if err != nil {
 		logging.LogFuncEnd("SearchSubscriptions")
+		logging.LogError(err)
 		return buf, errors.New("request.Pages() returned an error")
 	}
 	if len(buf) < 1 {
 		logging.LogFuncEnd("SearchSubscriptions")
+		logging.LogVar(buf, "buf")
 		return buf, errors.New("no channel title matches the specified string")
 	}
 
@@ -72,7 +79,13 @@ func SearchSubscriptions(token *oauth2.Token, textToSearch string, searchIn keyb
 	return buf, nil
 }
 
-func SearchPlaylists(token *oauth2.Token, textToSearch string, searchIn keyboards.SearchIn, resultLim uint16) ([]*youtube.Playlist, error) {
+func SearchPlaylists(
+	token *oauth2.Token,
+	textToSearch string,
+	searchIn keyboards.SearchIn,
+	resultLim uint16,
+) ([]*youtube.Playlist, error) {
+	logging.LogFuncStart("SearchPlaylists")
 	ctx := context.Background()
 	youtubeService, err := newYouTubeService(token)
 	if err != nil {
@@ -101,10 +114,12 @@ func SearchPlaylists(token *oauth2.Token, textToSearch string, searchIn keyboard
 	})
 	if err != nil {
 		logging.LogFuncEnd("SearchPlaylists")
+		logging.LogError(err)
 		return buf, errors.New("request.Pages() returned an error")
 	}
 	if len(buf) < 1 {
 		logging.LogFuncEnd("SearchPlaylists")
+		logging.LogVar(buf, "buf")
 		return buf, errors.New("no channel title matches the specified string")
 	}
 

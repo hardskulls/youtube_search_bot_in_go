@@ -11,6 +11,7 @@ import (
 )
 
 func ListSubscriptions(token *oauth2.Token, sorting keyboards.Sorting, resultLim uint16) ([]*youtube.Subscription, error) {
+	logging.LogFuncStart("ListSubscriptions")
 	ctx := context.Background()
 	youtubeService, err := newYouTubeService(token)
 	if err != nil {
@@ -34,10 +35,12 @@ func ListSubscriptions(token *oauth2.Token, sorting keyboards.Sorting, resultLim
 	})
 	if err != nil {
 		logging.LogFuncEnd("SearchSubsByTitle")
+		logging.LogError(err)
 		return buf, errors.New("request.Pages() returned an error")
 	}
 	if len(buf) < 1 {
 		logging.LogFuncEnd("SearchSubsByTitle")
+		logging.LogVar(buf, "buf")
 		return buf, errors.New("no channel title matches the specified string")
 	}
 
@@ -52,10 +55,12 @@ func ListSubscriptions(token *oauth2.Token, sorting keyboards.Sorting, resultLim
 		})
 	}
 	logging.LogFuncEnd("SearchSubsByTitle")
+	logging.LogVar(buf, "buf")
 	return buf, nil
 }
 
 func ListPlaylists(token *oauth2.Token, sorting keyboards.Sorting, resultLim uint16) ([]*youtube.Playlist, error) {
+	logging.LogFuncStart("ListPlaylists")
 	ctx := context.Background()
 	youtubeService, err := newYouTubeService(token)
 	if err != nil {
@@ -79,10 +84,12 @@ func ListPlaylists(token *oauth2.Token, sorting keyboards.Sorting, resultLim uin
 	})
 	if err != nil {
 		logging.LogFuncEnd("SearchPlaylistsBy")
+		logging.LogError(err)
 		return buf, errors.New("request.Pages() returned an error")
 	}
 	if len(buf) < 1 {
 		logging.LogFuncEnd("SearchPlaylistsBy")
+		logging.LogVar(buf, "buf")
 		return buf, errors.New("no channel title matches the specified string")
 	}
 
